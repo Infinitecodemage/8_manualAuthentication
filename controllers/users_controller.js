@@ -55,12 +55,11 @@ module.exports.create = async function(req, res){
         if(req.body.password != req.body.confirm_password){
             return res.redirect('back');
         }
-        console.log(req.body.email + ' --email');
+        // console.log(req.body.email + ' --email');
 
         const user = await User.findOne({email: req.body.email });
 
         if(!user){
-            console.log('!user')
             const newUser = await User.create(req.body);
             // return res.redirect('./sign-in');
             return res.redirect('/users/sign-in');
@@ -78,6 +77,41 @@ module.exports.create = async function(req, res){
 
 
 //get the sign in and create a session for the users
-module.exports.createSession = function(req, res){
-    // ToDo later
+module.exports.createSession = async function(req, res){
+    // Steps to authenticate
+
+    try{
+        // find the user with email only.
+        const user = await User.findOne({email: req.body.email});
+
+        if(user){
+            if(user.password != req.body.password){
+                    return res.redirect('back');
+            }
+
+            // Handle session creation
+            res.cookie('user_id', user.id);
+            return res.redirect('/users/profile');
+        }else{
+            //handle users not found.
+            return res.redirect('back');
+        }
+
+        
+    }catch(err){
+        //error in finding user
+        console.log('error in finding user in signing up', err);
+    }
+
+    // Find the User
+    User.findOne({email: req.body.email}, function(err, user){
+        if(err){ 
+            console.log('error in finding the user in signing in.');
+            return;
+        }
+        // hander user found.
+        if(user){
+            // handle password which doesn't match.
+        }
+    })
 }
