@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/codeial_development');
+// mongoose.connect('mongodb://localhost/codeial_development');
+
+// deprecated options in the MongoDB driver
+mongoose.connect('mongodb://localhost/db_name', { useNewUrlParser: true, useUnifiedTopology: true });
+
 
 const db = mongoose.connection;
 
