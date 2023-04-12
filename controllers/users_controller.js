@@ -27,6 +27,12 @@ module.exports.profile = function(req, res){
         }
 }
 
+module.exports.logOut = function(req, res){
+    console.log(res.cookie.user_id + "---- log");
+    res.clearCookie('user_id');
+    return res.redirect('/users/sign-in');
+}
+
 
 
 
@@ -111,6 +117,7 @@ module.exports.createSession = async function(req, res){
             }
 
             // Handle session creation
+            // store in cookie
             res.cookie('user_id', user.id);
             return res.redirect('/users/profile');
         }else{
