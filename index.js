@@ -1,4 +1,6 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
+
 const app = express();
 const port = 8000;
 
@@ -6,6 +8,16 @@ const port = 8000;
 const expressLayouts = require('express-ejs-layouts');
 const db = require('./config/mongoose');
 
+//for post  middleware parses this data 
+//and makes it available in the req.body object,
+// app.use(express.urlencoded());
+
+// Parse URL-encoded data with extended option
+app.use(express.urlencoded({ extended: true }));
+
+
+// use cookie-parser middle ware
+app.use(cookieParser());
 
 app.use(express.static('./assets'));
 
